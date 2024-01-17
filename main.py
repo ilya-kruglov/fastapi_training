@@ -15,7 +15,11 @@ def hello_author():
 def greetings(
         name: str, surname: str, age: Optional[int] = None
 ) -> dict[str, str]:
-    return {"Hello": name.capitalize()}
+    result = " ".join([name, surname])
+    result = result.title()
+    if age is not None:
+        result += ", " + str(age)
+    return {"Hello": result}
 
 
 if __name__ == '__main__':
