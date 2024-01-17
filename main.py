@@ -1,5 +1,6 @@
-import uvicorn
+from typing import Optional
 
+import uvicorn
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -11,7 +12,9 @@ def hello_author():
 
 
 @app.get("/{name}")
-def greetings(name: str, surname: str, age: int) -> dict[str, str]:
+def greetings(
+        name: str, surname: str, age: Optional[int] = None
+) -> dict[str, str]:
     return {"Hello": name.capitalize()}
 
 
