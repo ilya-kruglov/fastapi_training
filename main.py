@@ -6,6 +6,17 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
+@app.get("/multiplication")
+def multiplication(
+        length: int,
+        width: int,
+        depth: Optional[int] = None
+) -> int:
+    if depth is not None:
+        return int(length * width * depth)
+    return int(length * width)
+
+
 @app.get("/me")
 def hello_author():
     return {"Hello": "author"}
