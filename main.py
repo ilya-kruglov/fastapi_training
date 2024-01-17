@@ -43,12 +43,12 @@ def multiplication(
     return int(length * width)
 
 
-@app.get("/me")
+@app.get("/me", tags=["special methods", "greetings"])
 def hello_author():
     return {"Hello": "author"}
 
 
-@app.get("/{name}")
+@app.get("/{name}", tags=["common methods", "greetings"])
 def greetings(
         *,
         surname: str,
