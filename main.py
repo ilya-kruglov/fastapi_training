@@ -55,9 +55,7 @@ def hello_author():
 @app.get(
     "/{name}",
     tags=["common methods", "greetings"],
-    summary="Общее приветствие",
-    description="Приветствие человека по имени и фамилии; опционально"
-                " указывается возраст, образование и статус сотрудника"
+    summary="Общее приветствие"
 )
 def greetings(
         *,
@@ -67,6 +65,16 @@ def greetings(
         education_level: Optional[EducationLevel] = None,
         name: str,
 ) -> dict[str, str]:
+    """
+    Приветствие пользователя:
+
+    - **name**: имя
+    - **surname**: фамилия
+    - **age**: возраст (опционально)
+    - **is_staff**: является ли пользователь сотрудником
+    - **education_level**: уровень образования (опционально)
+    """
+
     result = " ".join([name, surname])
     result = result.title()
     if age is not None:
