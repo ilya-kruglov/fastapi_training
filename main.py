@@ -11,7 +11,7 @@ def hello_author():
 
 
 @app.get("/{name}")
-def greetings(name: str):
+def greetings(name: str, surname: str, age: int) -> dict[str, str]:
     return {"Hello": name.capitalize()}
 
 
