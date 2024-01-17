@@ -3,9 +3,10 @@ import uvicorn
 from fastapi import FastAPI
 
 # Создание объекта приложения.
-app = FastAPI()
+# app = FastAPI()
 # Без документации (uvicorn main:app --reload)
 # app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI(docs_url='/swagger')
 
 
 # Декоратор, определяющий, что GET-запросы к основному URL приложения
