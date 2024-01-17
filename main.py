@@ -55,7 +55,9 @@ def hello_author():
 @app.get(
     "/{name}",
     tags=["common methods", "greetings"],
-    summary="Общее приветствие"
+    summary="Общее приветствие",
+    description="Приветствие человека по имени и фамилии; опционально"
+                " указывается возраст, образование и статус сотрудника"
 )
 def greetings(
         *,
