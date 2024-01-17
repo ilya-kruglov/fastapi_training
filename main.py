@@ -31,11 +31,12 @@ def hello_author():
 
 @app.get("/{name}")
 def greetings(
-        name: str,
+        *,
         surname: str,
         age: Optional[int] = None,
         is_staff: bool = False,
         education_level: Optional[EducationLevel] = None,
+        name: str,
 ) -> dict[str, str]:
     result = " ".join([name, surname])
     result = result.title()
