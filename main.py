@@ -66,7 +66,10 @@ def greetings(
         # cyrillic_string: str = Query(
         #     'Здесь только кириллица', regex='^[А-Яа-яЁё ]+$'
         # ),
-        name: str = Path(..., min_length=2, max_length=20),
+        name: str = Path(
+            ..., min_length=2, max_length=20,
+            title='Полное имя', description='Можно вводить в любом регистре'
+        ),
         surname: str = Query(..., min_length=2, max_length=50),
         age: Optional[int] = Query(None, gt=4, le=99),
         is_staff: bool = False,
