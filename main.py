@@ -72,7 +72,7 @@ def greetings(
         ),
         surname: str = Query(..., min_length=2, max_length=50),
         age: Optional[int] = Query(None, gt=4, le=99),
-        is_staff: bool = False,
+        is_staff: bool = Query(False, alias='is-staff'),
         education_level: Optional[EducationLevel] = None,
 ) -> dict[str, str]:
     """
