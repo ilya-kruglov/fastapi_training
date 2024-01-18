@@ -2,7 +2,7 @@ from enum import Enum, IntEnum
 from typing import Optional
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Path, Query
 
 app = FastAPI()
 
@@ -60,11 +60,13 @@ def hello_author():
 )
 def greetings(
         *,
-        surname: str,
+        # У параметров запроса name и surname значений по умолчанию нет,
+        # поэтому в первый параметр ставим многоточие, Ellipsis.
+        name: str = Path(..., min_length=2, max_length=20),
+        surname: str = Query(..., min_length=2, max_length=50),
         age: Optional[int] = None,
         is_staff: bool = False,
         education_level: Optional[EducationLevel] = None,
-        name: str,
 ) -> dict[str, str]:
     """
     Приветствие пользователя:
