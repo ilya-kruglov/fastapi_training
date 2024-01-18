@@ -64,11 +64,11 @@ def greetings(
         # поэтому в первый параметр ставим многоточие, Ellipsis.
         # Заодно добавим значение по умолчанию.
         # cyrillic_string: str = Query(
-        # 'Здесь только кириллица', regex='^[А-Яа-яЁё ]+$'
-        # )
+        #     'Здесь только кириллица', regex='^[А-Яа-яЁё ]+$'
+        # ),
         name: str = Path(..., min_length=2, max_length=20),
         surname: str = Query(..., min_length=2, max_length=50),
-        age: Optional[int] = None,
+        age: Optional[int] = Query(None, gt=4, le=99),
         is_staff: bool = False,
         education_level: Optional[EducationLevel] = None,
 ) -> dict[str, str]:
