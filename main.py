@@ -72,7 +72,9 @@ def greetings(
         ),
         surname: str = Query(..., min_length=2, max_length=50),
         age: Optional[int] = Query(None, gt=4, le=99),
-        is_staff: bool = Query(False, alias='is-staff'),
+        is_staff: bool = Query(
+            False, alias='is-staff', include_in_schema=False
+        ),
         education_level: Optional[EducationLevel] = None,
 ) -> dict[str, str]:
     """
@@ -81,7 +83,6 @@ def greetings(
     - **name**: имя
     - **surname**: фамилия
     - **age**: возраст (опционально)
-    - **is_staff**: является ли пользователь сотрудником
     - **education_level**: уровень образования (опционально)
     """
 
