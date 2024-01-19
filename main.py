@@ -2,7 +2,8 @@ from enum import Enum, IntEnum
 from typing import Optional
 
 import uvicorn
-from fastapi import FastAPI, Path, Query
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -27,75 +28,40 @@ class CelestialBodies(IntEnum):
     MERCURY = 4_879
 
 
+class Person(BaseModel):
+    name: str
+    surname: list[str]
+    age: Optional[int]
+    is_staff: bool = False
+    education_level: Optional[EducationLevel]
+
+
 @app.get('/get-solar-object-name')
 def get_solar_object_name(diameter: CelestialBodies) -> str:
     return CelestialBodies(diameter).name
 
 
-@app.get("/multiplication")
-def multiplication(
-        length: int,
-        width: int,
-        depth: Optional[int] = None
-) -> int:
-    if depth is not None:
-        return int(length * width * depth)
-    return int(length * width)
-
-
-@app.get(
-    "/me",
-    tags=["special methods", "greetings"],
-    summary="Приветствие автора"
-)
-def hello_author():
-    return {"Hello": "author"}
-
-
-@app.get(
-    "/{name}",
-    tags=["common methods", "greetings"],
-    summary="Общее приветствие",
-    response_description="Полная строка приветствия"
-)
-def greetings(
-        *,
-        # У параметров запроса name и surname значений по умолчанию нет,
-        # поэтому в первый параметр ставим многоточие, Ellipsis.
-        # Заодно добавим значение по умолчанию.
-        # cyrillic_string: str = Query(
-        #     'Здесь только кириллица', regex='^[А-Яа-яЁё ]+$'
-        # ),
-        name: str = Path(
-            ..., min_length=2, max_length=20,
-            title='Полное имя', description='Можно вводить в любом регистре'
-        ),
-        surname: list[str] = Query(..., min_length=1, max_length=50),
-        age: Optional[int] = Query(None, gt=4, le=99),
-        is_staff: bool = Query(
-            False, alias='is-staff', include_in_schema=False
-        ),
-        education_level: Optional[EducationLevel] = None,
-) -> dict[str, str]:
-    """
-    Приветствие пользователя:
-
-    - **name**: имя
-    - **surname**: фамилия или несколько фамилий
-    - **age**: возраст (опционально)
-    - **education_level**: уровень образования (опционально)
-    """
-
-    surnames = " ".join(surname)
-    result = " ".join([name, surnames])
+@app.post('/hello')
+def greetings(person: Person) -> dict[str, str]:
+    print(f'person.surname = {person.surname}')
+    print(f'person.surname type = {type(person.surname)}')
+    print()
+    surnames = ' '.join(person.surname)
+    print(f'surnames = {surnames}')
+    print(f'surnames type = {type(surnames)}')
+    print()
+    result = ' '.join([person.name, surnames])
+    print(f'result = {result}')
+    print(f'result type = {type(result)}')
+    print()
     result = result.title()
-    if age is not None:
-        result += ", " + str(age)
-    if education_level is not None:
-        result += ", " + education_level.lower()
-    if is_staff:
-        result += ", сотрудник"
-    return {"Hello": result}
+    if person.age is not None:
+        result += ', ' + str(person.age)
+    if person.education_level is not None:
+        result += ', ' + person.education_level.lower()
+    if person.is_staff:
+        result += ', сотрудник'
+    return {'Hello': result}
 
 
 if __name__ == '__main__':
