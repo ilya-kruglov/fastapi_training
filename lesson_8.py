@@ -3,7 +3,7 @@ from typing import Optional
 
 import uvicorn
 from fastapi import FastAPI
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -26,19 +26,8 @@ class AuctionLot(BaseModel):
     category: LotCategory
     name: str
     model: Optional[str]
-    start_price: int = Field(
-        default=None,
-        description='Start price, multiple of 1000',
-    )
+    start_price: Optional[int] = 1000
     seller: Person
-
-    @validator('start_price')
-    def validate_start_price(cls, value):
-        if value is None:
-            return None
-        if value % 1000 != 0:
-            raise ValueError('Start price must be a multiple of 1000')
-        return value
 
 
 @app.post('/new-lot')
