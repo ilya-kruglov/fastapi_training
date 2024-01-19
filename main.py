@@ -1,5 +1,5 @@
 from enum import Enum, IntEnum
-from typing import Optional
+from typing import Optional, Union
 
 import uvicorn
 from fastapi import FastAPI
@@ -30,7 +30,7 @@ class CelestialBodies(IntEnum):
 
 class Person(BaseModel):
     name: str
-    surname: list[str]
+    surname: Union[str, list[str]]
     age: Optional[int]
     is_staff: bool = False
     education_level: Optional[EducationLevel]
@@ -43,18 +43,14 @@ def get_solar_object_name(diameter: CelestialBodies) -> str:
 
 @app.post('/hello')
 def greetings(person: Person) -> dict[str, str]:
-    print(f'person.surname = {person.surname}')
-    print(f'person.surname type = {type(person.surname)}')
-    print()
-    surnames = ' '.join(person.surname)
-    print(f'surnames = {surnames}')
-    print(f'surnames type = {type(surnames)}')
-    print()
+    if isinstance(person.surname, list):
+        surnames = ' '.join(person.surname)
+    else:
+        surnames = person.surname
+
     result = ' '.join([person.name, surnames])
-    print(f'result = {result}')
-    print(f'result type = {type(result)}')
-    print()
     result = result.title()
+
     if person.age is not None:
         result += ', ' + str(person.age)
     if person.education_level is not None:
