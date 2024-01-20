@@ -31,13 +31,22 @@ class Person(BaseModel):
         title='Full name', description='Case-insensitive input is allowed'
     )
     surname: Union[str, list[str]] = Field(..., max_length=50)
-    age: Optional[int] = Field(None, gt=4, le=99)
+    age: Optional[int] = Field(None, gt=4, le=99, example=21)
     is_staff: bool = Field(False, alias='is-staff')
     education_level: Optional[EducationLevel]
 
     class Config:
         title = 'Class for greetings'
         min_anystr_length = 2
+        schema_extra = {
+            'example': {
+                'name': 'Pablo',
+                'surname': ['Escobar', 'Gaviria'],
+                'age': 74,
+                'is_staff': False,
+                'education_level': 'Среднее образование'
+            }
+        }
 
     @validator('name')
     def name_cant_be_numeric(cls, value: str):
