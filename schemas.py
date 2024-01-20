@@ -1,7 +1,7 @@
 from enum import Enum, IntEnum
 from typing import Optional, Union
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CelestialBodies(IntEnum):
@@ -25,8 +25,11 @@ class EducationLevel(str, Enum):
 
 
 class Person(BaseModel):
-    name: str
-    surname: Union[str, list[str]]
-    age: Optional[int]
-    is_staff: bool = False
+    name: str = Field(
+        ..., min_length=2, max_length=20,
+        title='Full name', description='Case-insensitive input is allowed'
+    )
+    surname: Union[str, list[str]] = Field(..., min_length=2, max_length=50)
+    age: Optional[int] = Field(None, gt=4, le=99)
+    is_staff: bool = Field(False, alias='is-staff')
     education_level: Optional[EducationLevel]
