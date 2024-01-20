@@ -39,12 +39,40 @@ class Person(BaseModel):
         title = 'Class for greetings'
         min_anystr_length = 2
         schema_extra = {
-            'example': {
-                'name': 'Pablo',
-                'surname': ['Escobar', 'Gaviria'],
-                'age': 74,
-                'is_staff': False,
-                'education_level': 'Среднее образование'
+            'examples': {
+                'single_surname': {
+                    'summary': 'Одна фамилия',
+                    'description': 'Одиночная фамилия передаётся строкой',
+                    'value': {
+                        'name': 'Taras',
+                        'surname': 'Belov',
+                        'age': 20,
+                        'is_staff': False,
+                        'education_level': 'Среднее образование'
+                    }
+                },
+                'multiple_surnames': {
+                    'summary': 'Несколько фамилий',
+                    'description': 'Несколько фамилий передаются списком',
+                    'value': {
+                        'name': 'Pablo',
+                        'surname': ['Escobar', 'Gaviria'],
+                        'age': 74,
+                        'is_staff': False,
+                        'education_level': 'Среднее образование'
+                    }
+                },
+                'invalid': {
+                    'summary': 'Некорректный запрос',
+                    'description': 'Возраст передаётся только целым числом',
+                    'value': {
+                        'name': 'Eduardo',
+                        'surname': ['Santos', 'Tavares'],
+                        'age': 'forever young',
+                        'is_staff': False,
+                        'education_level': 'Среднее специальное образование'
+                    }
+                }
             }
         }
 
