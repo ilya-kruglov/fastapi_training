@@ -1,7 +1,8 @@
+import re
 from enum import Enum, IntEnum
 from typing import Optional, Union
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, root_validator, validator
 
 
 class CelestialBodies(IntEnum):
@@ -43,3 +44,14 @@ class Person(BaseModel):
         if value.isnumeric():
             raise ValueError('The name cannot be a number')
         return value
+
+    @root_validator(skip_on_failure=True)
+    def using_different_languages(cls, values):
+        surname = ''.join(values['surname'])
+        checked_value = values['name'] + surname
+        if (re.search('[а-я]', checked_value, re.IGNORECASE)
+                and re.search('[a-z]', checked_value, re.IGNORECASE)):
+            raise ValueError(
+                'Пожалуйста, не смешивайте русские и латинские буквы'
+            )
+        return values
