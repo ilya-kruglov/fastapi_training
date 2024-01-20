@@ -1,7 +1,7 @@
 from enum import Enum, IntEnum
 from typing import Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class CelestialBodies(IntEnum):
@@ -37,3 +37,9 @@ class Person(BaseModel):
     class Config:
         title = 'Class for greetings'
         min_anystr_length = 2
+
+    @validator('name')
+    def name_cant_be_numeric(cls, value: str):
+        if value.isnumeric():
+            raise ValueError('The name cannot be a number')
+        return value
