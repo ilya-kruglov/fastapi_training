@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import Body, FastAPI
 
-from schemas import CelestialBodies, Person
+from app.schemas.schemas import CelestialBodies, Person
 
 app = FastAPI()
 
