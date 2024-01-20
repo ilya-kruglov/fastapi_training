@@ -1,38 +1,11 @@
 import uvicorn
-from fastapi import Body, FastAPI
+from fastapi import FastAPI
 
-from app.schemas.schemas import CelestialBodies, Person
+from app.api.endpoints import router
 
 app = FastAPI()
 
-
-@app.get('/get-solar-object-name')
-def get_solar_object_name(diameter: CelestialBodies) -> str:
-    return CelestialBodies(diameter).name
-
-
-@app.post('/hello')
-def greetings(
-        person: Person = Body(
-            ...,
-            examples=Person.Config.schema_extra['examples']
-        )
-) -> dict[str, str]:
-    if isinstance(person.surname, list):
-        surnames = ' '.join(person.surname)
-    else:
-        surnames = person.surname
-
-    result = ' '.join([person.name, surnames])
-    result = result.title()
-
-    if person.age is not None:
-        result += ', ' + str(person.age)
-    if person.education_level is not None:
-        result += ', ' + person.education_level.lower()
-    if person.is_staff:
-        result += ', сотрудник'
-    return {'Hello': result}
+app.include_router(router)
 
 
 if __name__ == '__main__':

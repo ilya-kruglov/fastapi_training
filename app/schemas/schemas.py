@@ -1,22 +1,8 @@
 import re
-from enum import Enum, IntEnum
+from enum import Enum
 from typing import Optional, Union
 
 from pydantic import BaseModel, Field, root_validator, validator
-
-
-class CelestialBodies(IntEnum):
-    SUN = 1_392_000
-    JUPITER = 139_822
-    SATURN = 116_464
-    URANUS = 50_724
-    NEPTUNE = 49_224
-    EARTH = 12_742
-    VENUS = 12_104
-    MARS = 6_780
-    GANYMEDE = 5_262
-    TITAN = 5_151
-    MERCURY = 4_879
 
 
 class EducationLevel(str, Enum):
