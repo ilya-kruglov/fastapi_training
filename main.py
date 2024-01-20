@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 
 from schemas import CelestialBodies, Person
 
@@ -12,7 +12,47 @@ def get_solar_object_name(diameter: CelestialBodies) -> str:
 
 
 @app.post('/hello')
-def greetings(person: Person) -> dict[str, str]:
+def greetings(person: Person = Body(
+    ...,
+    examples={
+        # 1st example
+        'single_surname': {
+            'summary': 'Одна фамилия',
+            'description': 'Одиночная фамилия передаётся строкой',
+            'value': {
+                'name': 'Taras',
+                'surname': 'Belov',
+                'age': 20,
+                'is_staff': False,
+                'education_level': 'Среднее образование'
+            }
+        },
+        # 2nd example
+        'multiple_surnames': {
+            'summary': 'Несколько фамилий',
+            'description': 'Несколько фамилий передаются списком',
+            'values': {
+                'name': 'Eduardo',
+                'surname': ['Santos', 'Tavares'],
+                'age': 20,
+                'is_staff': False,
+                'education_level': 'Высшее образование'
+            }
+        },
+        # 3d example
+        'invalid': {
+            'summary': 'Некорректный запрос',
+            'description': 'Возраст передаётся только целым числом',
+            'value': {
+                'name': 'Eduardo',
+                'surname': ['Santos', 'Tavares'],
+                'age': 'forever young',
+                'is_staff': False,
+                'education_level': 'Среднее специальное образование'
+            }
+        }
+    }
+)) -> dict[str, str]:
     if isinstance(person.surname, list):
         surnames = ' '.join(person.surname)
     else:
