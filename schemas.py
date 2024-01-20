@@ -26,10 +26,14 @@ class EducationLevel(str, Enum):
 
 class Person(BaseModel):
     name: str = Field(
-        ..., min_length=2, max_length=20,
+        ..., max_length=20,
         title='Full name', description='Case-insensitive input is allowed'
     )
-    surname: Union[str, list[str]] = Field(..., min_length=2, max_length=50)
+    surname: Union[str, list[str]] = Field(..., max_length=50)
     age: Optional[int] = Field(None, gt=4, le=99)
     is_staff: bool = Field(False, alias='is-staff')
     education_level: Optional[EducationLevel]
+
+    class Config:
+        title = 'Class for greetings'
+        min_anystr_length = 2
